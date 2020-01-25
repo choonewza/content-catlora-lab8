@@ -2,9 +2,7 @@
 
 LedModule::~LedModule()
 {
-    Serial.print(F("Debug: LedModule["));
-    Serial.print(getName());
-    Serial.println(F("] is destroyed."));
+    debug("is destroyed.");
 }
 LedModule::LedModule() {}
 LedModule::LedModule(const char *name)
@@ -30,6 +28,13 @@ void LedModule::begin(uint8_t pin)
 {
     this->pin = pin;
     begin();
+}
+void LedModule::debug(String msg)
+{
+    Serial.print(F("_DEBUG: LedModule["));
+    Serial.print(getName());
+    Serial.print(F("] "));
+    Serial.println(msg);
 }
 uint8_t LedModule::getState()
 {
@@ -57,12 +62,23 @@ void LedModule::on()
     {
         this->state = HIGH;
         digitalWrite(this->pin, this->state);
+
+        #ifdef _DEBUG
+            debug("Trun-on");
+        #endif
     }
 }
 void LedModule::off()
 {
-    this->state = LOW;
-    digitalWrite(this->pin, this->state);
+    if (this->state == HIGH)
+    {
+        this->state = LOW;
+        digitalWrite(this->pin, this->state);
+
+        #ifdef _DEBUG
+            debug("Trun-off");
+        #endif
+    }
 }
 void LedModule::toggle()
 {

@@ -3,6 +3,8 @@
 
 #include "Arduino.h"
 
+#define _DEBUG 1
+
 class LedModule
 {
 protected:
@@ -18,6 +20,7 @@ public:
   LedModule(const char *name, uint8_t pin);
   void begin();
   void begin(uint8_t pin);
+  void debug(String msg);
   uint8_t getState();
   uint8_t setState(uint8_t state);
   uint8_t getPinout();
